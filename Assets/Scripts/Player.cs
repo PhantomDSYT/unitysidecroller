@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Player : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class Player : MonoBehaviour
     private bool superJumpKeyWasPressed;
     private int coins = 0;
     private int superJumpsRemaining = 0;
+    private float speed = 3;
     
 
     // Start is called before the first frame update
@@ -38,11 +40,11 @@ public class Player : MonoBehaviour
 
     private void FixedUpdate()
     {
-        rigidbodyComponent.velocity = new Vector3(horizontalInput, rigidbodyComponent.velocity.y, 0);
+        rigidbodyComponent.velocity = new Vector3(horizontalInput * speed, rigidbodyComponent.velocity.y, 0);
 
         if (superJumpKeyWasPressed && superJumpsRemaining > 0)
         {
-            rigidbodyComponent.AddForce(Vector3.up * 12, ForceMode.VelocityChange);
+            rigidbodyComponent.AddForce(Vector3.up * 10, ForceMode.VelocityChange);
             superJumpKeyWasPressed = false;
             superJumpsRemaining--;
         }
@@ -71,6 +73,11 @@ public class Player : MonoBehaviour
         {
             superJumpsRemaining++;
             Destroy(other.gameObject);
+        }
+
+        if (other.gameObject.layer == 11)
+        {
+            SceneManager.LoadScene("SampleScene");
         }
     }
 }
